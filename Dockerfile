@@ -80,7 +80,7 @@ COPY src/ ./
 # The API imports ../src/aws-exports (an AWS Amplify file that is not in the repository).
 # Create an empty stub when it is missing so the server can start without AWS.
 RUN [ -f src/aws-exports.js ] || [ -f src/aws-exports.ts ] || \
-       echo "const awsmobile = { Auth: { Cognito: { userPoolId: '', userPoolClientId: '', identityPoolId: '' } } }; module.exports = awsmobile; module.exports.default = awsmobile;" > src/aws-exports.js
+    echo "const awsmobile = { Auth: { Cognito: { userPoolId: '', userPoolClientId: '', identityPoolId: '' } } }; module.exports = awsmobile; module.exports.default = awsmobile;" > src/aws-exports.js
 
 # Start from a clean copy of the demo data and let the non-root user write to it.
 RUN cp data/database-seed.json data/database.json \
