@@ -1,4 +1,3 @@
-@'
 # Local environment overrides (src/.env belongs to the original project and stays tracked)
 .env.local
 .env*.local
@@ -24,4 +23,3 @@ Thumbs.db
 .idea/
 .vscode/*
 !.vscode/extensions.json
-'@ | Set-Content -Encoding utf8 .gitignore

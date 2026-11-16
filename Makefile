@@ -1,4 +1,3 @@
-$m = @'
 .PHONY: help build run stop logs shell status clean
 
 help: ## Show available commands
@@ -25,5 +24,3 @@ status: ## Show container status and health
 
 clean: ## Stop containers AND delete the data volume (resets demo data)
     docker compose down -v --remove-orphans
-'@
-($m -replace '(?m)^    ', "`t") | Set-Content -Encoding utf8 Makefile
