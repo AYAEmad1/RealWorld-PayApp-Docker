@@ -1,0 +1,35 @@
+# Version control and CI
+.git
+.github
+.gitattributes
+
+# Dependencies and build output are produced inside the image
+**/node_modules
+**/build
+**/coverage
+**/.nyc_output
+
+# Docker / tooling files not needed inside the images
+Dockerfile
+docker-compose*.yml
+Makefile
+.dockerignore
+docs
+README.md
+LICENSE
+
+# Parts of the original project that are only used for testing or cloud deployment
+src/cypress
+src/amplify
+src/.circleci
+src/.github
+src/.husky
+src/.vscode
+
+# Editor and OS files
+**/.idea
+**/.DS_Store
+**/*.log
+
+# NOTE: src/.env is intentionally NOT ignored. The original project keeps its (non-secret)
+# defaults there: ports and demo-data settings.

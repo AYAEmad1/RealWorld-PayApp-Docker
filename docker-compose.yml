@@ -1,0 +1,49 @@
+name: payapp-docker
+
+
+services:
+  api:
+    build:
+      context: .
+      target: api
+    image: payapp-api:latest
+    container_name: payapp-api
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      VITE_BACKEND_PORT: 3001
+    volumes:
+      - api_data:/app/data
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3001/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+
+  web:
+    build:
+      context: .
+      target: web
+      args:
+        VITE_BACKEND_PORT: 3001
+    image: payapp-web:latest
+    container_name: payapp-web
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+      retries: 3
+
+volumes:
+  api_data:
