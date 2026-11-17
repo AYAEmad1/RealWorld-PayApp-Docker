@@ -8,16 +8,6 @@ The backend imports an AWS Amplify configuration file (`src/aws-exports`) that i
 
 **Solution:** in the `api` stage of the `Dockerfile` I create a small placeholder `src/aws-exports.js` (only when the file does not already exist) containing empty Cognito values. After that, the server started and the healthcheck became `healthy`.
 
-## Other problems I fixed on the way
-
-- **Missing config files (`not found` during build):** the build stopped at `COPY vite.docker.config.ts ./` with `"/vite.docker.config.ts": not found`. The Dockerfile expects `vite.docker.config.ts` and `nginx.conf` in the project root (next to the `Dockerfile`), but I had not created them there yet. I created both files in the root and the build continued. `vite.docker.config.ts` is a production build config without the development-only plugins (ESLint, code coverage); `nginx.conf` serves the built React app with a single-page-app fallback.
-- **Incomplete Dockerfile (`target stage "web" could not be found`):** my first copy of the `Dockerfile` was cut off (only a few lines were saved), so Docker could not find the `web` stage. Replacing it with the complete file fixed it. I now check the file with `(Get-Content Dockerfile).Count` after pasting.
-- **Fixed ports:** the React code calls `http://localhost:3001`, and the API only allows requests (CORS) from `http://localhost:3000`, so both ports must stay as they are.
-- **Install scripts:** `HUSKY=0` and `CYPRESS_INSTALL_BINARY=0` while installing, so the build does not need a Git repository or download the 200 MB Cypress test runner.
-
-**Lesson:** a successful `docker build` does not mean the container works. Always check `docker compose ps` and read `docker logs <container>`.
-
-
 
 
 
